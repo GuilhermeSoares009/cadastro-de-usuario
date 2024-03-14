@@ -28,7 +28,7 @@ Class ResponseService{
       case 'update':
         return [
           'status' => true,
-          'msg'    => 'Dados Atualizados com sucesso',
+          'msg'    => 'Dados Atualizado com sucesso',
           'url'    => $id != null ? route($route,$id) : route($route)
         ];
         break;

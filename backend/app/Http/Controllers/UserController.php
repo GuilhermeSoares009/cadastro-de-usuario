@@ -7,7 +7,8 @@ use App\Http\Requests\User\StoreUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ResponseService;
-use App\Providers\AppServiceProvider;
+use App\Transformers\User\UserResource;
+use App\Transformers\User\UserResourceCollection;
 
 
 class UserController extends Controller
@@ -36,5 +37,8 @@ class UserController extends Controller
         } catch (\Throwable |\Exception $e) {
             return ResponseService::exception('users.store',null,$e);
         }
+
+        return new UserResource($user,array('type' => 'store','route' => 'users.store'));
+    
     }
 }
