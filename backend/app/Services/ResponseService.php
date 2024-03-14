@@ -62,7 +62,7 @@ Class ResponseService{
         return response()->json([
           'status' => false,
           'statusCode' => 404,
-          'error'  => $e->getMessage(),
+          'error'  => 'pets pets',
           'url'    => $id != null ? route($route,$id) : route($route)
         ],404);
         break;

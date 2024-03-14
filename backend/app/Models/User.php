@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\Facades\JWTAuth as JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
@@ -45,12 +48,30 @@ class User extends Authenticatable
         ];
     }
 
-    public function create($fields) 
+    public function create($fields)
     {
         return parent::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
             'password' => Hash::make($fields['password'])
         ]);
+    }
+
+    public function login($credentials)
+    {
+        if (!$token = JWTAuth::attempt($credentials)) {
+            throw new \Exception('Credenciais incorretas, verifique-as e tente novamente.', -404);
+        }
+        return $token;
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
