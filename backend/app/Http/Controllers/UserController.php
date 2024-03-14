@@ -48,4 +48,21 @@ class UserController extends Controller
         }
         return response()->json(compact('token'));
     }
+
+    /**
+     * Logout user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        try {
+            $this->user->logout($request->input('token'));
+        } catch (\Throwable | \Exception $e) {
+            return ResponseService::exception('users.logout', null, $e);
+        }
+
+        return response(['status' => true, 'msg' => 'Deslogado com sucesso'], 200);
+    }
 }
